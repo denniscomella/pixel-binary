@@ -38,7 +38,7 @@ def run(text):
 def save_path():
     # determine file name to save image
     while not Global.validFileName:
-        Global.filename = input("Enter a valid filename (*.bmp or *.png recommended; *.jpg and *.tga allowed): ")
+        Global.filename = input("Enter a valid filename (*.png or *.bmp recommended; *.jpg and *.tga allowed): ")
         if Global.filename == "settings.png":
             print("File name is forbidden! Please choose a different file name.")
             continue
