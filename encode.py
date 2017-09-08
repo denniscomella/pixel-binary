@@ -38,10 +38,13 @@ def run(text):
 def save_path():
     # determine file name to save image
     while not Global.validFileName:
-        Global.filename = input("Enter a valid filename (*.png or *.bmp recommended; *.jpg and *.tga allowed): ")
+        # Global.filename = input("Enter a valid filename (*.png or *.bmp recommended; *.jpg and *.tga allowed): ")
         if Global.filename == "settings.png":
             print("File name is forbidden! Please choose a different file name.")
             continue
+        if Global.filename == "":
+            Global.filename = "image.png"
+            print("Image will be saved as default: 'image.png'")
         for ext in Global.valid_exts:
             if Global.filename[-4:] == ext and len(Global.filename) >= 5:
                 if Global.filename[-3:] == "jpg":
@@ -50,7 +53,8 @@ def save_path():
                 break
         else:
             try:
-                print("\"" + Global.filename[Global.filename.index("."):] + "\" is not a valid file extension.")
+                # print("\"" + Global.filename[Global.filename.index("."):] + "\" is not a valid file extension.")
+                Global.filename = Global.filename + ".png"
             except ValueError:
                 print("Please specify a proper file name (e.g. \"sample.png\")")
 
