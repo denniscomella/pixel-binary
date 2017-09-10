@@ -3,7 +3,7 @@ from settings import Global as Global
 import decipher
 import encode
 import sys
-from flask import Flask, send_file
+from flask import Flask, send_file, request
 
 
 
@@ -32,18 +32,28 @@ def get_text():
         get_text()
 
 
+
 if __name__ == "__main__":
     app = Flask(__name__)
 
-    # this is all that's needed to run the app normally.
-    get_text()
     # # #
-
+    # this is all that's needed to run the app normally.
+    # get_text()
+    # # #
+    print("1")
     # this will be implemented on the web!
-    @app.route('/submit_string', methods = ['POST'])
-    def text_to_image():
+    @app.route('/', methods=['POST'])
+    def text_to_img():
+        print("3")
+        text = request.form['submitText']
+        Global.filename = request.form['fileName']
+        print("4")
+        encode.run(text)
         return send_file(Global.filename, as_attachment=True, cache_timeout=0)
 
-    app.run(port=4999)
+
+    print("2")
+    app.run(port=4999, debug=True)
+
 
 # end app

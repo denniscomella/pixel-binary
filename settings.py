@@ -14,6 +14,7 @@ class Global:
     img_width = 1
     max_width = None
     binary = ""  # gets populated through user.get_text()
+    filename = ""
 
 
 # print("Type \"/options\" to change image parameters.")
