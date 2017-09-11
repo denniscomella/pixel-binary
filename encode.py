@@ -8,7 +8,7 @@ from settings import Global
 
 def run(text):
     Global.text_is_valid = False
-    binary = Global.binary
+    binary = ""
     while not Global.text_is_valid:
         for char in text:
             bin_char = format(ord(char), 'b')
