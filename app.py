@@ -42,10 +42,11 @@ if __name__ == "__main__":
     # this will be implemented on the web!
     @app.route('/', methods=['POST'])
     def text_to_img():
-        print("3")
-        text = request.form['submitText']
-        Global.filename = request.form['fileName']
-        print("4")
+        try:
+            text = request.form['submitText']
+            Global.filename = request.form['fileName']
+        except Exception as ex:
+            return str(ex) + ": Could not receive data"
         try:
             encode.run(text)
         except Exception as ex:
