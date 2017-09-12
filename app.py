@@ -6,8 +6,6 @@ import sys
 from flask import Flask, send_file, request
 
 
-
-
 # get user input
 def get_text():
     text = input("Enter a command or '/help' for a list of commands: ")
@@ -32,15 +30,15 @@ def get_text():
         get_text()
 
 
-
 if __name__ == "__main__":
     app = Flask(__name__)
+
 
     # # #
     # this is all that's needed to run the app normally.
     # get_text()
     # # #
-    print("1")
+
     # this will be implemented on the web!
     @app.route('/', methods=['POST'])
     def text_to_img():
@@ -48,11 +46,16 @@ if __name__ == "__main__":
         text = request.form['submitText']
         Global.filename = request.form['fileName']
         print("4")
-        encode.run(text)
-        return send_file(Global.filename, as_attachment=True, cache_timeout=0)
+        try:
+            encode.run(text)
+        except Exception as ex:
+            return str(ex) + ": Could not encode"
+        try:
+            return send_file(Global.filename, as_attachment=True, cache_timeout=5)
+        except Exception as ex:
+            return str(ex) + ": Could not return file"
 
 
-    print("2")
     app.run(port=5000)
 
 
