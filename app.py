@@ -1,5 +1,5 @@
 import settings
-from settings import Global as Global
+from settings import Global
 import decipher
 import encode
 import sys
@@ -30,34 +30,34 @@ def get_text():
         get_text()
 
 
+app = Flask(__name__)
+
+# this will be implemented on the web!
+@app.route('/', methods=['POST'])
+def text_to_img():
+    try:
+        text = request.form['submitText']
+        Global.filename = request.form['fileName']
+    except Exception as ex:
+        return str(ex) + ": Could not receive data"
+    try:
+        encode.run(text)
+    except Exception as ex:
+        return str(ex) + ": Could not encode"
+    try:
+        return send_file(Global.filename, as_attachment=True, cache_timeout=5)
+    except Exception as ex:
+        return str(ex) + ": Could not return file"
+
 if __name__ == "__main__":
-    app = Flask(__name__)
-
-
-    # # #
-    # this is all that's needed to run the app normally.
-    # get_text()
-    # # #
-
-    # this will be implemented on the web!
-    @app.route('/', methods=['POST'])
-    def text_to_img():
-        try:
-            text = request.form['submitText']
-            Global.filename = request.form['fileName']
-        except Exception as ex:
-            return str(ex) + ": Could not receive data"
-        try:
-            encode.run(text)
-        except Exception as ex:
-            return str(ex) + ": Could not encode"
-        try:
-            return send_file(Global.filename, as_attachment=True, cache_timeout=5)
-        except Exception as ex:
-            return str(ex) + ": Could not return file"
-
-
     app.run(port=5000)
+
+
+# # #
+# this is all that's needed to run the app normally with text prompt.
+# get_text()
+# # #
+
 
 
 # end app
