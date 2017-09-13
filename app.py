@@ -47,6 +47,7 @@ def text_to_img():
 
 if __name__ == "__main__":
     app.run(port=5000)
+    text_to_img()
 
 
 # # #
