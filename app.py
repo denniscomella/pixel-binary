@@ -38,16 +38,12 @@ def text_to_img():
     try:
         text = request.form['submitText']
         Global.filename = request.form['fileName']
-    except Exception as ex:
-        return str(ex) + ": Could not receive data"
-    try:
+
         encode.run(text)
-    except Exception as ex:
-        return str(ex) + ": Could not encode"
-    try:
+
         return send_file(Global.filename, as_attachment=True, cache_timeout=5)
     except Exception as ex:
-        return str(ex) + ": Could not return file"
+        return str(ex) + ": There was an error."
 
 if __name__ == "__main__":
     app.run(port=5000)
