@@ -25,6 +25,11 @@ def get_text():
         print("Type '/help' or '/h' to see a list of commands.")
         sys.stdout.write("\033[0;0m")
         get_text()
+    elif text == "/dir":
+        from os import listdir
+        files = listdir()
+        for file in files:
+            print(str(file))
     else:
         print("Not a valid command.")
         get_text()
