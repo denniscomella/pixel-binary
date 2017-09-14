@@ -33,7 +33,7 @@ def get_text():
 app = Flask(__name__)
 
 # this will be implemented on the web!
-@app.route('/', methods=['POST'])
+@app.route('/encode', methods=['POST'])
 def text_to_img():
     try:
         text = request.form['submitText']
@@ -46,7 +46,7 @@ def text_to_img():
         return str(ex) + ": There was an error."
 
 if __name__ == "__main__":
-    app.run(port=5000)
+    app.run()
 
 
 # # #
