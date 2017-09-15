@@ -4,18 +4,28 @@ This module decodes an image into readable text.
 
 import pygame
 from re import match
+from settings import Global
 
 
 def get_file():
     print("This feature works best with images of two distinct colors.")
     print("It will only work for characters of 8 bits each.")
     filename = input("Enter the name of the file you wish to decipher: ")
-    file = pygame.image.load(filename)
-    return file
+    user_file = pygame.image.load(filename)
+    return user_file
 
 
-def interpret():
-    file = get_file()
+def check_file_is_image(img_file):
+    if img_file[-4:] in Global.valid_exts:
+        return True
+    else:
+        return False
+
+
+def interpret(file):
+    if not check_file_is_image(file):
+        print("Not a valid image file. Please try again.")
+        return "Not a valid image file. Please try again."
     pxarray = pygame.PixelArray(file)
     print(pxarray)
     print(pxarray[0, 0])
@@ -97,7 +107,10 @@ def interpret():
         pr_second(char_str_2)
         second = True
     while not second:
-        worked = check_yes_no("Did this decode readable text? (y/n): ")
+        if Global.prompt:
+            worked = check_yes_no("Did this decode readable text? (y/n): ")
+        else:
+            worked = False
         if not worked:
             pr_second(char_str_2)
             second = True
@@ -109,15 +122,22 @@ def interpret():
             pass
     saved = False
     while not saved:
-        save_it = check_yes_no("Would you like to save this text to a file? (y/n): ")
+        if Global.prompt:
+            save_it = check_yes_no("Would you like to save this text to a file? (y/n): ")
+        else:
+            save_it = True
         if save_it:
             if second:
                 new_char_str = char_str_1 + "\nBinary: " + bin1 + "\n\n" + char_str_2 + "\nBinary: " + bin2
             else:
                 new_char_str = char_str_1 + "\nBinary: " + bin1
-            print("This will overwrite any existing *.txt file. This cannot be undone.")
+            if Global.prompt:
+                print("This will overwrite any existing *.txt file. This cannot be undone.")
             try:
-                file_name = input("Please enter a file name (will be saved as *.txt): ")
+                if Global.prompt:
+                    file_name = input("Please enter a file name (will be saved as *.txt): ")
+                else:
+                    file_name = file[:-4]
                 save_txt(file_name, new_char_str)
             except UnicodeEncodeError:
                 try:
@@ -132,13 +152,21 @@ def interpret():
                     try:
                         save_txt(file_name, new_char_str)
                         break
-                    except:
-                        pass
+                    except UnicodeEncodeError:
+                        return "Binary could not be read/written with standard Unicode characters."
+                else:
+                    try:
+                        new_char_str = char_str_1 + "\nBinary: " + bin1
+                        save_txt(file_name, new_char_str)
+                        break
+                    except UnicodeEncodeError:
+                        return "Binary could not be read/written with standard Unicode characters."
                 import sys
                 sys.stdout.write("\033[1;31m")
                 print("There was an error encoding. Strings returned undefined Unicode characters.")
                 sys.stdout.write("\033[0;0m")
             saved = True
+            Global.txt_filename = str(file_name) + ".txt"
         elif not save_it:
             break
 
@@ -173,4 +201,7 @@ def save_txt(file_name, text_string):
 ############################################
 
 if __name__ == "__main__":
-    interpret()
+    file = get_file()
+    Global.prompt = True
+    interpret(file)
+    Global.prompt = False

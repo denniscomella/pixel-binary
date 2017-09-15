@@ -13,7 +13,8 @@ def get_text():
         settings.options()
         get_text()
     elif text in ("/decipher", "/d"):
-        decipher.interpret()
+        filename = decipher.get_file()
+        decipher.interpret(filename)
     elif text in ("/encode", "/e"):
         text = input("Enter the ASCII text to be converted to a graphical bit string: ")
         encode.run(text)  # begin main program to encode text.
@@ -82,6 +83,22 @@ def text_to_img():
         return send_file(Global.filename, as_attachment=True)
     except Exception as ex:
         return str(ex) + ": There was an error retrieving form data."
+
+@app.route('/decipher', methods=['POST'])
+def img_to_txt():
+    image = request.form['imageUpload']
+    decipher.interpret(image)
+    try:
+        save = request.form['asFile'] # return a txt file or just a simple HTML page
+        if not save:
+            with open(Global.txt_filename, "r") as file:
+                return file
+        else:
+            raise Exception
+    except:
+        return send_file(Global.filename, as_attachment=True)
+
+
 
 if __name__ == "__main__":
     app.run()

@@ -16,6 +16,8 @@ class Global:
     binary = ""  # gets populated through user.get_text()
     filename = ""
     form_fileType = None
+    prompt = False
+    txt_filename = ""
 
 
 # print("Type \"/options\" to change image parameters.")
@@ -113,3 +115,7 @@ def hex_to_rgb(value):
     value = value.lstrip('#')
     lv = len(value)
     return [int(value[i:i + lv // 3], 16) for i in range(0, lv, lv // 3)]
+
+def rgb_to_hex(red, green, blue):
+    """Return color as #rrggbb for the given color values."""
+    return '#%02x%02x%02x' % (red, green, blue)
