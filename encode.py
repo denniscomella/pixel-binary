@@ -37,6 +37,7 @@ def run(text):
 
 def save_path():
     # determine file name to save image
+    Global.validFileName = False
     while not Global.validFileName:
         # Global.filename = input("Enter a valid filename (*.png or *.bmp recommended; *.jpg and *.tga allowed): ")
         if Global.filename == "settings.png":
@@ -45,16 +46,15 @@ def save_path():
         if Global.filename == "":
             Global.filename = "image.png"
             print("Image will be saved as default: 'image.png'")
-        for ext in Global.valid_exts:
-            if Global.filename[-4:] == ext and len(Global.filename) >= 5:
-                if Global.filename[-3:] == "jpg":
-                    print("JPEG images may produce un-decipherable results due to compression. Proceed accordingly.")
-                Global.validFileName = True
-                break
+        if str(Global.filename[-4:]) in Global.valid_exts and len(Global.filename) >= 5:
+            if Global.filename[-3:] == "jpg":
+                print("JPEG images may produce un-decipherable results due to compression. Proceed accordingly.")
+            Global.validFileName = True
+
         else:
             try:
                 # print("\"" + Global.filename[Global.filename.index("."):] + "\" is not a valid file extension.")
-                Global.filename = Global.filename + ".png"
+                Global.filename = Global.filename + Global.form_fileType
             except ValueError:
                 print("Please specify a proper file name (e.g. \"sample.png\")")
 
@@ -67,6 +67,7 @@ def save_image():
     # draw all the pixels... currently not working.
     if Global.zero_color != Global.BLACK:
         screen.fill(Global.zero_color)
+    Global.bitNum = 0
     for bit in Global.binary:
         if bit == "1":
             x = Global.bitNum

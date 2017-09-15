@@ -15,6 +15,7 @@ class Global:
     max_width = None
     binary = ""  # gets populated through user.get_text()
     filename = ""
+    form_fileType = None
 
 
 # print("Type \"/options\" to change image parameters.")

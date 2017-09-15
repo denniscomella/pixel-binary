@@ -48,6 +48,19 @@ def text_to_img():
         text = request.form['submitText']
         Global.filename = request.form['fileName']
 
+        try:
+            file_type = request.form['fileType']
+            Global.form_fileType = file_type
+        except:
+            Global.form_fileType = ".png"
+        try:
+            color0 = request.form['color0']
+            Global.zero_color = color0
+            color1 = request.form['color1']
+            Global.one_color = color1
+        except:
+            pass
+
         encode.run(text)
 
         return send_file(Global.filename, as_attachment=True)
