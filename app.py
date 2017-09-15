@@ -99,7 +99,7 @@ def img_to_txt():
             print(filenm)
         except Exception as ex:
             return ex + ": filename attempt failed with that new-fangled param code."
-        print("image accessed")
+        # print("image accessed")
         try:
             Global.img_filename = image.filename
         except Exception as ex:
@@ -108,9 +108,9 @@ def img_to_txt():
             image = decipher.open_surface(Global.img_filename)
         except Exception as ex:
             return ex + ": cannot open image via Pygame."
-    except:
-        print("problem")
-        return "Bad image upload."
+    except Exception as ex:
+        print(ex + ": problem")
+        return ex + ": Bad image upload."
     try:
         decipher.interpret(image)
     except Exception as ex:
