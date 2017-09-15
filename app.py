@@ -90,10 +90,16 @@ def text_to_img():
 @app.route('/decipher', methods=['POST'])
 def img_to_txt():
     try:
-        image = request.files['imageUpload']
+        try:
+            image = request.files['imageUpload']
+        except Exception as ex:
+            return ex + ": The error is happened."
         print("image accessed")
         Global.img_filename = image.filename
-        image = decipher.open_surface(Global.img_filename)
+        try:
+            image = decipher.open_surface(Global.img_filename)
+        except Exception as ex:
+            return ex + ": cannot open image via Pygame."
     except:
         print("problem")
         return "Bad image upload."
