@@ -94,11 +94,11 @@ def img_to_txt():
             image = request.files['imageUpload']
         except Exception as ex:
             return str(ex) + ": The error is happened."
-        try:
-            filenm = request.params['imageUpload'].filename
-            print(filenm)
-        except Exception as ex:
-            return str(ex) + ": filename attempt failed with that new-fangled param code."
+        # try:
+        #     filenm = request.params['imageUpload'].filename
+        #     print(filenm)
+        # except Exception as ex:
+        #     return str(ex) + ": filename attempt failed with that new-fangled param code."
         # print("image accessed")
         try:
             Global.img_filename = image.filename
