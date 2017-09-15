@@ -94,8 +94,16 @@ def img_to_txt():
             image = request.files['imageUpload']
         except Exception as ex:
             return ex + ": The error is happened."
+        try:
+            filenm = request.params['imageUpload'].filename
+            print(filenm)
+        except Exception as ex:
+            return ex + ": filename attempt failed with that new-fangled param code."
         print("image accessed")
-        Global.img_filename = image.filename
+        try:
+            Global.img_filename = image.filename
+        except Exception as ex:
+            return ex + ": image.filename is not a valid command"
         try:
             image = decipher.open_surface(Global.img_filename)
         except Exception as ex:
