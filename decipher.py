@@ -182,9 +182,9 @@ def pr_second(char_str_2):
 
 def check_yes_no(message):
     user_input = input(message)
-    if user_input.lower in ("y", "yes"):
+    if user_input.lower() in ("y", "yes"):
         return True
-    elif user_input.lower in ("n", "no"):
+    elif user_input.lower() in ("n", "no"):
         return False
     else:
         print("'" + user_input + "' is not a valid response.")

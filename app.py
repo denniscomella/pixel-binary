@@ -100,14 +100,11 @@ def img_to_txt():
         # except Exception as ex:
         #     return str(ex) + ": filename attempt failed with that new-fangled param code."
         # print("image accessed")
+        Global.img_filename = image.filename
         try:
-            Global.img_filename = image.filename
+            image = decipher.open_surface(image) # opens image directly; does not require saving file to server
         except Exception as ex:
-            return str(ex) + ": image.filename is not a valid command"
-        try:
-            image = decipher.open_surface(Global.img_filename)
-        except Exception as ex:
-            return str(ex) + ": cannot open image via Pygame."
+            return str(ex) + ": cannot open image with Pygame."
     except Exception as ex:
         print(str(ex) + ": problem")
         return str(ex) + ": Bad image upload."
