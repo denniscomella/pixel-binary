@@ -90,7 +90,7 @@ def text_to_img():
 @app.route('/decipher', methods=['POST'])
 def img_to_txt():
     try:
-        image = request.files['imageUpload']
+        image = request.form['imageUpload']
         print("image accessed")
         Global.img_filename = image.filename
         image = decipher.open_surface(Global.img_filename)

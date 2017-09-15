@@ -192,7 +192,6 @@ def check_yes_no(message):
 
 
 def save_txt(file_name, text_string):
-    print("asfdasfkasdfjlkasjdf" + file_name)
     if file_name[-4:] == ".txt" and len(file_name) >= 5:
         file_name = file_name[:-4]
     with open(file_name + ".txt", "w") as txt_file:
