@@ -93,24 +93,24 @@ def img_to_txt():
         try:
             image = request.files['imageUpload']
         except Exception as ex:
-            return ex + ": The error is happened."
+            return str(ex) + ": The error is happened."
         try:
             filenm = request.params['imageUpload'].filename
             print(filenm)
         except Exception as ex:
-            return ex + ": filename attempt failed with that new-fangled param code."
+            return str(ex) + ": filename attempt failed with that new-fangled param code."
         # print("image accessed")
         try:
             Global.img_filename = image.filename
         except Exception as ex:
-            return ex + ": image.filename is not a valid command"
+            return str(ex) + ": image.filename is not a valid command"
         try:
             image = decipher.open_surface(Global.img_filename)
         except Exception as ex:
-            return ex + ": cannot open image via Pygame."
+            return str(ex) + ": cannot open image via Pygame."
     except Exception as ex:
-        print(ex + ": problem")
-        return ex + ": Bad image upload."
+        print(str(ex) + ": problem")
+        return str(ex) + ": Bad image upload."
     try:
         decipher.interpret(image)
     except Exception as ex:
