@@ -5,30 +5,43 @@ This module decodes an image into readable text.
 import pygame
 from re import match
 from settings import Global
+# from werkzeug.utils import secure_filename as sf # sf(filename)
+
+
+def open_surface(filename):
+    return pygame.image.load(filename)
 
 
 def get_file():
     print("This feature works best with images of two distinct colors.")
     print("It will only work for characters of 8 bits each.")
-    filename = input("Enter the name of the file you wish to decipher: ")
-    user_file = pygame.image.load(filename)
-    return user_file
+    theres_a_file = False
+    while not theres_a_file:
+        if Global.prompt:
+            filename = input("Enter the name of the file you wish to decipher: ")
+            if filename in ["/q", "/quit", "/exit"]:
+                break
+        if check_file_is_image(filename):
+            Global.img_filename = filename
+            user_file = open_surface(filename)
+            theres_a_file = True
+            return user_file
+        else:
+            print("Enter a valid file name.")
+            get_file()
 
 
 def check_file_is_image(img_file):
-    if img_file[-4:] in Global.valid_exts:
+    if str(img_file)[-4:] in Global.valid_exts:
         return True
     else:
         return False
 
 
-def interpret(file):
-    if not check_file_is_image(file):
-        print("Not a valid image file. Please try again.")
-        return "Not a valid image file. Please try again."
-    pxarray = pygame.PixelArray(file)
-    print(pxarray)
-    print(pxarray[0, 0])
+def interpret(img):
+    pxarray = pygame.PixelArray(img)
+    # print(pxarray)
+    # print(pxarray[0, 0])
     rgb_array = [[] for x in range(len(pxarray))]  # create blank 2d array
     print("len(pxarray): " + str(len(pxarray)))
     for i in range(len(pxarray)):
@@ -114,12 +127,8 @@ def interpret(file):
         if not worked:
             pr_second(char_str_2)
             second = True
-        elif worked:
+        else:
             break
-        else:  # this should never run due to redundancy in check_yes_no() method
-            print("Please respond accordingly.")
-            # loop back to start of "while"
-            pass
     saved = False
     while not saved:
         if Global.prompt:
@@ -133,40 +142,34 @@ def interpret(file):
                 new_char_str = char_str_1 + "\nBinary: " + bin1
             if Global.prompt:
                 print("This will overwrite any existing *.txt file. This cannot be undone.")
+                file_name = input("Please enter a file name (will be saved as *.txt): ")
+            else:
+                file_name = Global.img_filename[:-4]
+                Global.txt_filename = file_name + ".txt"
             try:
-                if Global.prompt:
-                    file_name = input("Please enter a file name (will be saved as *.txt): ")
-                else:
-                    file_name = file[:-4]
                 save_txt(file_name, new_char_str)
             except UnicodeEncodeError:
+                print("Determining valid Unicode...")
                 try:
-                    file = open(file_name + ".txt")
-                    file.close()
-                except:
-                    print("File could not be closed...")
-                    pass
-
-                if second:
-                    new_char_str = char_str_2 + "\nBinary: " + bin2
-                    try:
-                        save_txt(file_name, new_char_str)
-                        break
-                    except UnicodeEncodeError:
-                        return "Binary could not be read/written with standard Unicode characters."
-                else:
-                    try:
-                        new_char_str = char_str_1 + "\nBinary: " + bin1
-                        save_txt(file_name, new_char_str)
-                        break
-                    except UnicodeEncodeError:
-                        return "Binary could not be read/written with standard Unicode characters."
+                    new_char_str = char_str_1 + "\nBinary: " + bin1
+                    save_txt(file_name, new_char_str)
+                    break
+                except UnicodeEncodeError:
+                    print("The first attempted string failed. Checking second string...")
+                    if second:
+                        try:
+                            new_char_str = char_str_2 + "\nBinary: " + bin2
+                            save_txt(file_name, new_char_str)
+                            break
+                        except UnicodeEncodeError:
+                            return "Binary could not be read/written with standard Unicode characters."
+                '''
                 import sys
                 sys.stdout.write("\033[1;31m")
                 print("There was an error encoding. Strings returned undefined Unicode characters.")
-                sys.stdout.write("\033[0;0m")
+                sys.stdout.write("\033[0;0m")'''
             saved = True
-            Global.txt_filename = str(file_name) + ".txt"
+
         elif not save_it:
             break
 
@@ -179,9 +182,9 @@ def pr_second(char_str_2):
 
 def check_yes_no(message):
     user_input = input(message)
-    if user_input in ("y", "Y", "yes", "Yes", "YES"):
+    if user_input.lower in ("y", "yes"):
         return True
-    elif user_input in ("n", "N", "no", "No", "NO"):
+    elif user_input.lower in ("n", "no"):
         return False
     else:
         print("'" + user_input + "' is not a valid response.")
@@ -189,11 +192,11 @@ def check_yes_no(message):
 
 
 def save_txt(file_name, text_string):
+    print("asfdasfkasdfjlkasjdf" + file_name)
     if file_name[-4:] == ".txt" and len(file_name) >= 5:
         file_name = file_name[:-4]
-    file = open(file_name + ".txt", "w")
-    file.write(text_string)
-    file.close()
+    with open(file_name + ".txt", "w") as txt_file:
+        txt_file.write(text_string)
     print("File saved.")
     pass
 

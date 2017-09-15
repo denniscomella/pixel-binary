@@ -17,6 +17,7 @@ class Global:
     filename = ""
     form_fileType = None
     prompt = False
+    img_filename = ""
     txt_filename = ""
 
 
