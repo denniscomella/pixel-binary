@@ -27,9 +27,13 @@ def get_text():
         get_text()
     elif text == "/dir":
         from os import listdir
+        from glob import glob
         files = listdir()
         for file in files:
             print(str(file))
+        files = glob("/*")
+        print("root glob: " + files)
+
     else:
         print("Not a valid command.")
         get_text()
@@ -46,7 +50,7 @@ def text_to_img():
 
         encode.run(text)
 
-        return send_file(Global.filename, as_attachment=True, cache_timeout=5)
+        return send_file(Global.filename, as_attachment=True)
     except Exception as ex:
         return str(ex) + ": There was an error."
 
