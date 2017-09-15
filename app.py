@@ -27,12 +27,12 @@ def get_text():
         get_text()
     elif text == "/dir":
         from os import listdir
-        from glob import glob
         files = listdir()
         for file in files:
             print(str(file))
-        files = glob("/*")
-        print("root glob: " + files)
+        # from glob import glob
+        # files = glob("/*")
+        # print("root glob: " + files)
 
     else:
         print("Not a valid command.")
@@ -55,17 +55,33 @@ def text_to_img():
             Global.form_fileType = ".png"
         try:
             color0 = request.form['color0']
-            Global.zero_color = color0
             color1 = request.form['color1']
-            Global.one_color = color1
+            print(str(color0) + str(color1))
+            color0 = settings.hex_to_rgb(color0)
+            color1 = settings.hex_to_rgb(color1)
+            print(str(color0) + str(color1))
+            should_set_colors = False
+            for i in range(len(color0)):
+                if abs(color0[i]-color1[i]) > 127:
+                    should_set_colors = True
+                    break
+            if should_set_colors and len(color0) == 3 and len(color1) == 3:
+                print("Changing image colors.")
+                Global.zero_color = color0
+                Global.one_color = color1
+            else:
+                Global.zero_color = Global.BLACK
+                Global.one_color = Global.WHITE
         except:
+            Global.zero_color = Global.BLACK
+            Global.one_color = Global.WHITE
             pass
 
         encode.run(text)
 
         return send_file(Global.filename, as_attachment=True)
     except Exception as ex:
-        return str(ex) + ": There was an error."
+        return str(ex) + ": There was an error retrieving form data."
 
 if __name__ == "__main__":
     app.run()

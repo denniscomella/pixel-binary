@@ -76,3 +76,4 @@ def save_image():
 
     pygame.image.save(screen, Global.filename)  # save(Surface, filename)
     pygame.quit()
+
