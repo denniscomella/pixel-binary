@@ -13,7 +13,8 @@ This requires the Pygame library and Flask. Make sure you have the latest versio
 ## API Implementation
 The following code may be used on any web page running HTML5. It will allow encoding and deciphering of files with a number of options present.
 
-`<form action="https://pixel-binary.herokuapp.com/encode" method="post">
+```html
+<form action="https://pixel-binary.herokuapp.com/encode" method="post">
 <fieldset style="padding:20">
     <legend><h2>Encode text</h2></legend>
     Text to decode: <input type="text" name="submitText" placeholder="Text to decode"><br />
@@ -36,7 +37,8 @@ The following code may be used on any web page running HTML5. It will allow enco
     <input type="checkbox" name="asFile" value="on" checked="checked"> Save as *.txt file<br />
     <input type="submit" value="&nbsp;Convert image!&nbsp;">
 </fieldset>
-</form>`
+</form>
+```
 
 ## Running the program
 
